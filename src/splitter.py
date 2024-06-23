@@ -24,7 +24,7 @@ def split_sentences(text, punkt_path):
 document = "Hello world. I am Dr. Spock. This is a test document! It contains several sentences."
 
 # Specify the path to the punkt tokenizer files
-punkt_path = './assets/punk tokenizers/punkt'
+punkt_path = './assets/punkt tokenizers/punkt' # Run a terminal command to install the punkt files to a local direcotry path
 
 # Call the function to split the document into sentences
 sentences = split_sentences(document, punkt_path)
