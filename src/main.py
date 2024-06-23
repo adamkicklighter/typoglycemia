@@ -9,9 +9,9 @@ import random
 def play_round():
     """
     Plays a round of the Wikipedia sentence scrambler game.
-    
+
     Fetches a random Wikipedia article, selects a sentence, scrambles it, and prompts the user to guess the original sentence. The user's guess is then scored based on accuracy, and feedback is provided.
-    
+
     Steps:
     1. Fetch an article using `fetch_article`.
     2. Split the article into sentences using `split_sentences`.
@@ -31,7 +31,8 @@ def play_round():
             scrambled_sentence = typoglycemia(selected_sentence)
             print("Scrambled Sentence:", scrambled_sentence)
 
-            score = score_guess(selected_sentence, get_user_input("Guess the unscrambled sentence: "))
+            guess = get_user_input("Guess the unscrambled sentence: ")
+            score = score_guess(selected_sentence, guess)
             print(f"Your score: {score:.2f}%")
 
             if score > 95:
@@ -45,6 +46,10 @@ def play_round():
 
 if __name__ == '__main__':
     while True:
-        user_input = get_user_input("Guess the unscrambled sentence or type 'stop' to quit: ")
-        if not handle_game_control(user_input, play_round):
+        print("Type 'stop' to quit or press enter to play:")
+        user_input = get_user_input("")
+
+        if user_input.lower() == 'stop':
             break
+        else:
+            play_round()
