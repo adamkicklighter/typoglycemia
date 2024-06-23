@@ -3,20 +3,22 @@ from splitter import split_sentences
 from scrambler import typoglycemia
 from prompter import get_user_input, validate_input
 from scorer import score_guess
+from controller import handle_game_control
 import random
 
-def main():
+def play_round():
     """
-    Execute the main function of the Wikipedia sentence scrambler game.
+    Plays a round of the Wikipedia sentence scrambler game.
+    
+    Fetches a random Wikipedia article, selects a sentence, scrambles it, and prompts the user to guess the original sentence. The user's guess is then scored based on accuracy, and feedback is provided.
     
     Steps:
-    1. Fetch a random Wikipedia article using `fetch_article`.
-    2. Extract sentences from the article content using `split_sentences`.
-    3. Select one random sentence and scramble it using `typoglycemia`.
-    4. Display the scrambled sentence and prompt the user to guess its unscrambled form.
-    5. Score the user's guess against the original sentence and provide feedback.
-    
-    Outputs feedback based on the accuracy of the user's guess and handles cases where no valid article or sentences are found.
+    1. Fetch an article using `fetch_article`.
+    2. Split the article into sentences using `split_sentences`.
+    3. Randomly select one sentence and scramble it.
+    4. Display the scrambled sentence and prompt the user for a guess.
+    5. Score the user's guess against the original sentence using `score_guess`.
+    6. Provide feedback based on the score.
     """
     article = fetch_article()
     if article:
@@ -29,11 +31,10 @@ def main():
             scrambled_sentence = typoglycemia(selected_sentence)
             print("Scrambled Sentence:", scrambled_sentence)
 
-            user_input = get_user_input("Guess the unscrambled sentence: ")
-            score = score_guess(selected_sentence, user_input)
+            score = score_guess(selected_sentence, get_user_input("Guess the unscrambled sentence: "))
             print(f"Your score: {score:.2f}%")
 
-            if score > 90:  # You can adjust this threshold
+            if score > 95:
                 print("Correct! Well done.")
             else:
                 print(f"Incorrect. The correct sentence was: {selected_sentence}")
@@ -43,4 +44,7 @@ def main():
         print("Failed to fetch a random Wikipedia article")
 
 if __name__ == '__main__':
-    main()
+    while True:
+        user_input = get_user_input("Guess the unscrambled sentence or type 'stop' to quit: ")
+        if not handle_game_control(user_input, play_round):
+            break
